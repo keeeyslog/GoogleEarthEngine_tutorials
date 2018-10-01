@@ -7,7 +7,8 @@ var images = allavailable
   .filterDate('2017-4-01', '2017-4-30')
   .filterBounds(aoi)
   .filter(ee.Filter.lt('CLOUD_COVER', 7));
-// Output the summary of the All Available images to the console so that it can be refer to.
+// Output the summary of the All Available images
+// to the console so that it can be refer to.
 print(images);
 
 // Create a list of visualization parameters, including
@@ -19,16 +20,18 @@ var visParams = {bands: ['B4', 'B3', 'B2'], max: 30000};
 // visualization parameters.
 Map.addLayer(images, visParams, 'Before Composite');
 
-//Create a composite image of the medians of all images and add it to the map.
+// Create a composite image of the medians 
+// of all images and add it to the map.
 var composite = images.median();
 Map.addLayer(composite, visParams, 'composite');
 print(composite);
 
-//Clip the composite image to your study area.
+// Clip the composite image to your study area.
 var clip_composite = composite.clip(aoi);
 Map.addLayer(clip_composite, visParams, 'clipped');
 
-// This is a variable that makes a list of all of your features that you created.
+// This is a variable that makes a list of 
+// all of your features that you created.
 var features = [
   SnowIce, 
   EvergreenForest,
@@ -38,8 +41,8 @@ var features = [
   SnowIceShades
 ];
 
-//Use that list of features to combine them all into a feature collection and print this
-//to inspect it as necessary
+// Use that list of features to combine them all into a feature collection and print this
+// to inspect it as necessary
 var trainingareas = ee.FeatureCollection(features);
 print(trainingareas);
 
