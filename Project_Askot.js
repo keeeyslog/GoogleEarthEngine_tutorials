@@ -1,8 +1,8 @@
 # ChangeDetection_GEE
 How to perform change detection by using Google Earth Engine
 
-//Filter study area and dates
-//And control cloud cover.
+// Filter study area and dates
+// And control cloud cover.
 var images = allavailable 
   .filterDate('2017-4-01', '2017-4-30')
   .filterBounds(aoi)
@@ -46,23 +46,23 @@ var features = [
 var trainingareas = ee.FeatureCollection(features);
 print(trainingareas);
 
-//Add a layer in the map that shows training areas in all white.
+// Add a layer in the map that shows training areas in all white.
 Map.addLayer(trainingareas, {color: 'FFFFFF'}, 'Training Areas');
 
-//Overlay the polygons on the imagery to train the computer.
+// Overlay the polygons on the imagery to train the computer.
 var training = clip_composite.sampleRegions({
   collection: trainingareas,
   properties: ['class'],
   scale: 300
 });
 
-//Tell the computer which bands of the composite should use.
+// Tell the computer which bands of the composite should use.
 var bands = ['B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'B10', 'B11', 'BQA'];
 
-//Train a CART classifier with default parameters.
+// Train a CART classifier with default parameters.
 var trained = ee.Classifier.cart().train(training, 'class', bands);
 
-//Create the image with the same bands used for training
+// Create the image with the same bands used for training
 var classified = clip_composite.select(bands).classify(trained);
 print(classified);
 
